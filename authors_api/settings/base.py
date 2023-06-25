@@ -26,6 +26,27 @@ DJANGO_APPS = [
     
 ]
 
+THIRD_PARTY_APPS = [
+    "rest_framework",
+    "django_filters",
+    "django_countries",
+    "phonenumber_field",
+    "drf_yasg",
+]
+
+LOCAL_APPS = [
+    "core_apps.profiles",
+    "core_apps.common",
+    "core_apps.users",
+    "core_apps.articles",
+    "core_apps.ratings",
+    "core_apps.bookmarks",
+    "core_apps.responses",
+    "core_apps.search",
+]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -106,6 +127,7 @@ USE_TZ = True
 
 SITE_ID = 1
 
+ADMIN_URL = "supersecret/"
 
 
 
