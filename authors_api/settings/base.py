@@ -6,14 +6,13 @@ import environ
 env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-ROOT_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
-APP_DIR = ROOT_DIR / "core_apps" 
+
+APP_DIR = ROOT_DIR / "core_apps"
 
 DEBUG = env.bool("DJANGO_DEBUG", False)
-
-
-# Applications defination
+# Application definition
 
 DJANGO_APPS = [
     'django.contrib.contenttypes',
