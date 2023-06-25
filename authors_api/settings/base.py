@@ -1,23 +1,29 @@
+from datetime import timedelta
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+import environ
 
-SECRET_KEY = 'django-insecure-at3-fv7z67p1r1wy9^+1)ghqx*u_$r==2**5s!%h2bu)juozeo'
+env = environ.Env()
 
-DEBUG = True
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+ROOT_DIR = Path(__file__).resolve().parent.parent
 
-ALLOWED_HOSTS = []
+APP_DIR = ROOT_DIR / "core_apps" 
+
+DEBUG = env.bool("DJANGO_DEBUG", False)
 
 
-# Application definition
+# Applications defination
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "django.contrib.sites"
+    
 ]
 
 MIDDLEWARE = [
@@ -52,18 +58,25 @@ WSGI_APPLICATION = 'authors_api.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": "mydatabase",
+#     }
+# }
 
+DATABASES = {"default": env.db("DATABASE_URL")}
 
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+    "django.contrib.auth.hashers.ScryptPasswordHasher",
+]
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -81,9 +94,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -94,13 +104,18 @@ USE_L10N = True
 
 USE_TZ = True
 
+SITE_ID = 1
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+
+
+STATIC_URL = "/staticfiles/"
+STATIC_ROOT = str(ROOT_DIR / "staticfiles")
+
+MEDIA_URL = "/mediafiles/"
+MEDIA_ROOT = str(ROOT_DIR / "mediafiles")
+
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
+# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
