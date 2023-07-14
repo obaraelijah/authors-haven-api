@@ -39,6 +39,7 @@ THIRD_PARTY_APPS = [
     "allauth",
     "dj_rest_auth",
     "dj_rest_auth.registration",
+    "taggit",
 
 ]
 
