@@ -9,7 +9,6 @@ from core_apps.articles.models import Article
 from .models import Bookmark
 from .serializers import BookmarkSerializer
 
-
 class BookmarkCreateView(generics.CreateAPIView):
     queryset = Bookmark.objects.all()
     serializer_class = BookmarkSerializer
@@ -29,3 +28,31 @@ class BookmarkCreateView(generics.CreateAPIView):
             serializer.save(user=self.request.user, article=article)
         except IntegrityError:
             raise ValidationError("You have already bookmarked this article")
+ 
+        
+class BookmarkDestroyView(generics.DestroyAPIView):
+    queryset = Bookmark.objects.all()
+    lookup_field = "article_id"
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        user = self.request.user
+        article_id = self.kwargs.get("article_id")
+
+        try:
+            UUID(str(article_id), version=4)
+        except ValueError:
+            raise ValidationError("Invalid article_id provided")
+
+        try:
+            bookmark = Bookmark.objects.get(user=user, article__id=article_id)
+        except Bookmark.DoesNotExist:
+            raise NotFound("Bookmark not found or it doesn't belong to you.")
+
+        return bookmark
+
+    def perform_destroy(self, instance):
+        user = self.request.user
+        if instance.user != user:
+            raise ValidationError("You cannot delete a bookmark that is not yours")
+        instance.delete()
