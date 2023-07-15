@@ -37,7 +37,7 @@ class BookmarkDestroyView(generics.DestroyAPIView):
 
     def get_object(self):
         user = self.request.user
-        article_id = self.kwargs.get("article_id")
+        article_id = self.kwargs.get("article_id") #geting from the urls params
 
         try:
             UUID(str(article_id), version=4)
