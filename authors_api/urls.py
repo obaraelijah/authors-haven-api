@@ -10,6 +10,7 @@ urlpatterns = [
     path("api/v1/auth/", include("dj_rest_auth.urls")),
     path("api/v1/profiles/", include("core_apps.profiles.urls")),
     path("api/v1/bookmarks/", include("core_apps.bookmarks.urls")),
+    path("api/v1/responses/", include("core_apps.responses.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
