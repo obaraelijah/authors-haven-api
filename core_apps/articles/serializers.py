@@ -83,4 +83,48 @@ class ArticleSerializer(serializers.ModelSerializer):
         return article
     
     def update(self, instance, validated_data):
+        instance.author = validated_data.get("author", instance.author)
+        instance.title = validated_data.get("title", instance.title)
+        instance.description = validated_data.get("description", instance.description)
+        instance.body = validated_data.get("body", instance.body)
+        instance.banner_image = validated_data.get(
+            "banner_image", instance.banner_image
+        )
+        instance.updated_at = validated_data.get("updated_at", instance.updated_at)
         
+        if "tags" in validated_data:
+            instance.tags.set(validated_data["data"])
+            
+        instance.save()
+        return instance
+    
+    class Meta:
+        model = Article
+        fields = [
+            "id",
+            "title",
+            "slug",
+            "tags",
+            "estimated_reading_time",
+            "author_info",
+            "views",
+            "description",
+            "body",
+            "banner_image",
+            "average_rating",
+            "bookmarks_count",
+            "claps_count",
+            "bookmarks",
+            "responses",
+            "responses_count",
+            "created_at",
+            "updated_at",
+        ]
+
+class ClapSerializer(serializers.ModelSerializer):
+    article_title = serializers.CharField(source="article.title", read_only=True)
+    user_first_name = serializers.CharField(source="user.first_name", read_only=True)
+
+    class Meta:
+        model = Clap
+        fields = ["id", "user_first_name", "article_title"]  
