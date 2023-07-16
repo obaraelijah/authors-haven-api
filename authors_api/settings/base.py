@@ -40,6 +40,8 @@ THIRD_PARTY_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "taggit",
+    "django_elasticsearch_dsl",
+    "django_elasticsearch_dsl_drf",
 
 ]
 
@@ -181,6 +183,11 @@ REST_AUTH = {
 }
 
 
+ELASTICSEARCH_DSL = {
+    "default": {
+        "hosts": "es:9200",
+    },
+}
 
 import logging
 import logging.config
