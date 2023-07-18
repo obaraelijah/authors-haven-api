@@ -37,12 +37,13 @@ THIRD_PARTY_APPS = [
     "phonenumber_field",
     "rest_framework.authtoken",
     "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "taggit",
     "django_elasticsearch_dsl",
     "django_elasticsearch_dsl_drf",
-
 ]
 
 LOCAL_APPS = [
@@ -182,6 +183,18 @@ REST_AUTH = {
     "REGISTER_SERIALIZER": "core_apps.users.serializers.CustomRegisterSerializer",
 }
 
+AUTHENTICATION_BACKENDS = [
+    "allauth.account.auth_backends.AuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False
 
 ELASTICSEARCH_DSL = {
     "default": {
@@ -189,43 +202,21 @@ ELASTICSEARCH_DSL = {
     },
 }
 
-import logging
-import logging.config
-
-from django.utils.log import DEFAULT_LOGGING
-
-logger = logging.getLogger(__name__)
-
-LOG_LEVEL = "INFO"
-
-logging.config.dictConfig(
-    {
-        "version": 1,
-        "disable_existing_loggers": False,
-        "formatters": {
-            "console": {
-                "format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s",
-            },
-            "file": {"format": "%(asctime)s %(name)-12s %(levelname)-8s %(message)s"},
-            "django.server": DEFAULT_LOGGING["formatters"]["django.server"],
-        },
-        "handlers": {
-            "console": {
-                "class": "logging.StreamHandler",
-                "formatter": "console",
-            },
-            "file": {
-                "level": "INFO",
-                "class": "logging.FileHandler",
-                "formatter": "file",
-                "filename": "logs/authors.log",
-            },
-            "django.server": DEFAULT_LOGGING["handlers"]["django.server"],
-        },
-        "loggers": {
-            "": {"level": "INFO", "handlers": ["console", "file"], "propagate": False},
-            "apps": {"level": "INFO", "handlers": ["console"], "propagate": False},
-            "django.server": DEFAULT_LOGGING["loggers"]["django.server"],
-        },
-    }
-)
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s %(name)-12s %(asctime)s %(module)s "
+            "%(process)d %(thread)d %(message)s"
+        }
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        }
+    },
+    "root": {"level": "INFO", "handlers": ["console"]},
+}
