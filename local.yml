@@ -1,6 +1,14 @@
 version: "3.9"
 
 services:
+    es:
+        image: elasticsearch:7.17.9
+        environment:
+            - discovery.type=single-node
+        ports:
+            - "9200:9200"
+        networks:
+            - authors-api
     api:
         build:
             context: .
@@ -13,20 +21,33 @@ services:
         expose:
             - "8000"
         env_file:
-            - .env
+            - ./.envs/.local/.django
+            - ./.envs/.local/.postgres
         depends_on:
             - postgres
+            - mailhog
+            - redis
+            - es
         networks:
             - authors-api
-    
+
     postgres:
         build:
             context: .
             dockerfile: ./docker/local/postgres/Dockerfile
         volumes:
             - local_postgres_data:/var/lib/postgresql/data
+            - local_postgres_data_backups:/backups
         env_file:
-            - .env
+            - ./.envs/.local/.postgres
+        networks:
+            - authors-api
+
+    mailhog:
+        image: mailhog/mailhog:v1.0.0
+        container_name: mailhog
+        ports:
+            - "8025:8025"
         networks:
             - authors-api
 
@@ -43,11 +64,12 @@ services:
         volumes:
             - .:/app
         env_file:
-            - .env
+            - ./.envs/.local/.django
+            - ./.envs/.local/.postgres
         depends_on:
             - redis
             - postgres
-            
+            - mailhog
         networks:
             - authors-api
 
@@ -59,13 +81,15 @@ services:
         volumes:
             - flower_data:/data
         env_file:
-            - .env
+            - ./.envs/.local/.django
+            - ./.envs/.local/.postgres
         ports:
             - "5555:5555"
         depends_on:
             - redis
             - postgres
         networks:
+            - authors-api
 
     nginx:
         restart: always
@@ -82,13 +106,13 @@ services:
         networks:
             - authors-api
 
-
-    networks:
+networks:
     authors-api:
         driver: bridge
 
-    volumes:
-        static_volume:
-        media_volume:
-        local_postgres_data: {}
-        local_postgres_data_backups: {}
+volumes:
+    static_volume:
+    media_volume:
+    local_postgres_data: {}
+    local_postgres_data_backups: {}
+    flower_data: {}
