@@ -1,30 +1,20 @@
-from .base import * #noqa
+from .base import *  # noqa
+from .base import env
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = env("EMAIL_HOST", default="mailhog")
-EMAIL_PORT = env("EMAIL_PORT")
-DEFAULT_FROM_EMAIL = "elijah@django.com"
-DOMAIN = env("DOMAIN")
-SITE_NAME = "Authors Haven"
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env(
+    "DJANGO_SECRET_KEY",
+    default="oXPWQPA3C3sdBCuBeXUKq3LBp9YDJ33-306p9EAKf1ja1xkWnKY",
+)
 
-DATABASES = {
-    "default": {
-        "ENGINE": env("POSTGRES_ENGINE"),
-        "NAME": env("POSTGRES_DB"),
-        "USER": env("POSTGRES_USER"),
-        "PASSWORD": env("POSTGRES_PASSWORD"),
-        "HOST": env("PG_HOST"),
-        "PORT": env("PG_PORT"),
-    }
-}
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
 
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8080"]
 
 EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"
-EMAIL_HOST=env("EMAIL_HOST")
-EMAIL_USE_TLS = True
-EMAIL_PORT=env("EMAIL_PORT")
-EMAIL_HOST_USER=env("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD=env("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = "support@authors.site"
+EMAIL_HOST = env("EMAIL_HOST", default="mailhog")
+EMAIL_PORT = env("EMAIL_PORT")
+DEFAULT_FROM_EMAIL = "support@apiimperfect.site"
 DOMAIN = env("DOMAIN")
 SITE_NAME = "Authors Haven"

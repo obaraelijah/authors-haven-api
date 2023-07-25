@@ -3,21 +3,17 @@ from pathlib import Path
 
 import environ
 
-env = environ.Env(
-    DEBUG=(bool, False)
-)
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-environ.Env.read_env(BASE_DIR / ".env")
+ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
 
-DEBUG = env("DEBUG")
-SECRET_KEY = env("SECRET_KEY")
+APP_DIR = ROOT_DIR / "core_apps"
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS").split(" ")
-
+DEBUG = env.bool("DJANGO_DEBUG", False)
 # Application definition
+
 
 DJANGO_APPS = [
     'django.contrib.contenttypes',
@@ -35,6 +31,7 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "django_countries",
     "phonenumber_field",
+    "corsheaders",
     "rest_framework.authtoken",
     "djcelery_email",
     "allauth",
@@ -60,15 +57,19 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
+
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
 
 ROOT_URLCONF = 'authors_api.urls'
 
@@ -99,8 +100,16 @@ WSGI_APPLICATION = 'authors_api.wsgi.application'
 #         "NAME": "mydatabase",
 #     }
 # }
+DATABASES = {"default": env.db("DATABASE_URL")}
 
 
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+    "django.contrib.auth.hashers.ScryptPasswordHasher",
+]
 
 
 # Password validation
@@ -136,22 +145,23 @@ USE_TZ = True
 
 SITE_ID = 1
 
-
+ADMIN_URL = "supersecret/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/staticfiles/'
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIR = []
+STATIC_URL = "/staticfiles/"
+STATIC_ROOT = str(ROOT_DIR / "staticfiles")
 
 MEDIA_URL = "/mediafiles/"
-MEDIA_ROOT = BASE_DIR / "mediafiles"
+MEDIA_ROOT = str(ROOT_DIR / "mediafiles")
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CORS_URLS_REGEX = r"^api/.*$"
 
 AUTH_USER_MODEL = "users.User"
 
