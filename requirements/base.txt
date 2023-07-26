@@ -13,8 +13,6 @@ Pillow==9.4.0
 argon2-cffi==21.3.0
 pytz==2022.7.1
 django-taggit==3.1.0
-whitenoise==6.5.0
-
 
 
 redis==4.5.1
