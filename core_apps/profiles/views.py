@@ -33,8 +33,7 @@ class ProfileDetailAPIView(generics.RetrieveAPIView):
        return queryset
    
     def get_object(self):
-        """retrieve a specic profile 
-        """
+        """retrieve a specic profile """
         user = self.request.user
         profile = self.get_queryset().get(user=user)
         return profile
@@ -51,14 +50,14 @@ class UpdateProfileAPIView(generics.RetrieveAPIView):
         return profile
     
     def patch(self, request, *args, **kwargs):
-        """handles Http patch request
-        """
+        """handles Http patch request"""
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         serializer.save() 
         return Response(serializer.data, status=status.HTTP_200_OK)   
     
+
 
 class FollowerListView(APIView):
     permission_classes = [IsAuthenticated]
@@ -77,6 +76,7 @@ class FollowerListView(APIView):
         except Profile.DoesNotExist:
             return Response(status=404)
         
+
 
 class FollowingListView(APIView):
     def get(self, request, user_id, format=None):
@@ -127,6 +127,7 @@ class FollowAPIView(APIView):
         except Profile.DoesNotExist:
             raise NotFound("You can't follow a profile that does not exist.")  
         
+
 
 class UnfollowAPIView(APIView):
     def post(self, request, user_id, *args, **kwargs):
