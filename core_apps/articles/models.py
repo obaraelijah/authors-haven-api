@@ -77,9 +77,9 @@ class ArticleView(TimeStampedModel):
 
     @classmethod
     def record_view(cls, article, user, viewer_ip):
-        """creates a new article view instance If an 
-        ArticleView instance already exists with the same combination of article, 
-        user, and viewer_ip, 
+        """creates a new article view instance If an
+        ArticleView instance already exists with the same combination of article,
+        user, and viewer_ip,
         it retrieves that instance instead of creating a new one
         """
         view, _ = cls.objects.get_or_create(

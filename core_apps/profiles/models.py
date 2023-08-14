@@ -8,6 +8,7 @@ from core_apps.common.models import TimeStampedModel
 
 User = get_user_model()
 
+
 class Profile(TimeStampedModel):
     class Gender(models.TextChoices):
         MALE = (

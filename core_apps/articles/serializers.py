@@ -6,14 +6,15 @@ from core_apps.bookmarks.serializers import BookmarkSerializer
 from core_apps.profiles.serializers import ProfileSerializer
 from core_apps.responses.serializers import ResponseSerializer
 
+
 class TagListField(serializers.Field):
-    """takes a queryset of tags (value) and 
+    """takes a queryset of tags (value) and
     returns a list of tag names by iterating
     over each tag and extracting its name using a list comprehension
     """
+
     def to_representation(self, value):
         return [tag.name for tag in value.all()]
-    
 
     def to_internal_value(self, data):
         if not isinstance(data, list):
@@ -27,7 +28,8 @@ class TagListField(serializers.Field):
                 continue
             tag_objects.append(tag_name)
         return tag_objects
-    
+
+
 class ArticleSerializer(serializers.ModelSerializer):
     author_info = ProfileSerializer(source="author.profile", read_only=True)
     banner_image = serializers.SerializerMethodField()
@@ -42,7 +44,6 @@ class ArticleSerializer(serializers.ModelSerializer):
     responses_count = serializers.IntegerField(source="responses.count", read_only=True)
     created_at = serializers.SerializerMethodField()
     updated_at = serializers.SerializerMethodField()
-
 
     def get_responses_count(self, obj):
         return obj.responses.count()
@@ -81,7 +82,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         article = Article.objects.create(**validated_data)
         article.tags.set(tags)
         return article
-    
+
     def update(self, instance, validated_data):
         instance.author = validated_data.get("author", instance.author)
         instance.title = validated_data.get("title", instance.title)
@@ -91,13 +92,13 @@ class ArticleSerializer(serializers.ModelSerializer):
             "banner_image", instance.banner_image
         )
         instance.updated_at = validated_data.get("updated_at", instance.updated_at)
-        
+
         if "tags" in validated_data:
             instance.tags.set(validated_data["data"])
-            
+
         instance.save()
         return instance
-    
+
     class Meta:
         model = Article
         fields = [
@@ -121,10 +122,11 @@ class ArticleSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
+
 class ClapSerializer(serializers.ModelSerializer):
     article_title = serializers.CharField(source="article.title", read_only=True)
     user_first_name = serializers.CharField(source="user.first_name", read_only=True)
 
     class Meta:
         model = Clap
-        fields = ["id", "user_first_name", "article_title"]  
+        fields = ["id", "user_first_name", "article_title"]

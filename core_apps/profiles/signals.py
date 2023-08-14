@@ -1,6 +1,6 @@
 import logging
 
-from django.db.models.signals import post_save #after user has been saved
+from django.db.models.signals import post_save  # after user has been saved
 from django.dispatch import receiver
 
 from authors_api.settings.base import AUTH_USER_MODEL

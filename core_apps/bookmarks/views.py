@@ -9,6 +9,7 @@ from core_apps.articles.models import Article
 from .models import Bookmark
 from .serializers import BookmarkSerializer
 
+
 class BookmarkCreateView(generics.CreateAPIView):
     queryset = Bookmark.objects.all()
     serializer_class = BookmarkSerializer
@@ -28,8 +29,8 @@ class BookmarkCreateView(generics.CreateAPIView):
             serializer.save(user=self.request.user, article=article)
         except IntegrityError:
             raise ValidationError("You have already bookmarked this article")
- 
-        
+
+
 class BookmarkDestroyView(generics.DestroyAPIView):
     queryset = Bookmark.objects.all()
     lookup_field = "article_id"
@@ -37,7 +38,7 @@ class BookmarkDestroyView(generics.DestroyAPIView):
 
     def get_object(self):
         user = self.request.user
-        article_id = self.kwargs.get("article_id") #geting from the urls params
+        article_id = self.kwargs.get("article_id")  # geting from the urls params
 
         try:
             UUID(str(article_id), version=4)

@@ -5,13 +5,13 @@ from .models import Profile
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    first_name = serializers.CharField(source="user.first_name") #one to one field
+    first_name = serializers.CharField(source="user.first_name")  # one to one field
     last_name = serializers.CharField(source="user.last_name")
     email = serializers.EmailField(source="user.email")
     full_name = serializers.SerializerMethodField(read_only=True)
     profile_photo = serializers.SerializerMethodField()
     country = CountryField(name_only=True)
-    
+
     class Meta:
         model = Profile
         fields = [
@@ -28,9 +28,9 @@ class ProfileSerializer(serializers.ModelSerializer):
             "twitter_handle",
             "about_me",
         ]
-        
-        
-        #methods
+
+        # methods
+
     def get_full_name(self, obj):
         first_name = obj.user.first_name.title()
         last_name = obj.user.first_name.title()
@@ -38,8 +38,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_profile_photo(self, obj):
         return obj.profile_photo.url
-    
-    
+
+
 class UpdateProfileSerializer(serializers.ModelSerializer):
     country = CountryField(name_only=True)
 
@@ -53,8 +53,9 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
             "country",
             "city",
             "twitter_handle",
-        ]    
-    
+        ]
+
+
 class FollowingSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source="user.first_name")
     last_name = serializers.CharField(source="user.last_name")
@@ -67,4 +68,4 @@ class FollowingSerializer(serializers.ModelSerializer):
             "profile_photo",
             "about_me",
             "twitter_handle",
-        ]        
+        ]

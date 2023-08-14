@@ -1,4 +1,4 @@
-#TODO: change this in production
+# TODO: change this in production
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from rest_framework import generics, status
@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from.exceptions import CantFollowYourself
+from .exceptions import CantFollowYourself
 from .models import Profile
 from .pagination import ProfilePagination
 from .renderers import ProfileJSONRenderer, ProfilesJSONRenderer
@@ -21,42 +21,42 @@ class ProfileListAPIView(generics.ListAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
     pagination_class = ProfilePagination
-    renderer_classes = [ProfilesJSONRenderer]  
-    
+    renderer_classes = [ProfilesJSONRenderer]
+
+
 class ProfileDetailAPIView(generics.RetrieveAPIView):
-    permission_classes  = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     serializer_class = ProfileSerializer
     renderer_classes = [ProfileJSONRenderer]
-    
+
     def get_queryset(self):
-       queryset = Profile.objects.select_related("user")
-       return queryset
-   
+        queryset = Profile.objects.select_related("user")
+        return queryset
+
     def get_object(self):
-        """retrieve a specic profile """
+        """retrieve a specic profile"""
         user = self.request.user
         profile = self.get_queryset().get(user=user)
         return profile
-    
+
 
 class UpdateProfileAPIView(generics.RetrieveAPIView):
     serializer_class = UpdateProfileSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser]
     renderer_classes = [ProfileJSONRenderer]
-    
+
     def get_object(self):
         profile = self.request.user.profile
         return profile
-    
+
     def patch(self, request, *args, **kwargs):
         """handles Http patch request"""
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        serializer.save() 
-        return Response(serializer.data, status=status.HTTP_200_OK)   
-    
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class FollowerListView(APIView):
@@ -75,7 +75,6 @@ class FollowerListView(APIView):
             return Response(formatted_response, status=status.HTTP_200_OK)
         except Profile.DoesNotExist:
             return Response(status=404)
-        
 
 
 class FollowingListView(APIView):
@@ -125,8 +124,7 @@ class FollowAPIView(APIView):
                 },
             )
         except Profile.DoesNotExist:
-            raise NotFound("You can't follow a profile that does not exist.")  
-        
+            raise NotFound("You can't follow a profile that does not exist.")
 
 
 class UnfollowAPIView(APIView):
@@ -150,5 +148,3 @@ class UnfollowAPIView(APIView):
             "message": f"You have unfollowed {profile.user.first_name} {profile.user.last_name}",
         }
         return Response(formatted_response, status.HTTP_200_OK)
-    
-       

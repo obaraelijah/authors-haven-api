@@ -19,7 +19,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     password = factory.LazyAttribute(lambda x: faker.password())
     is_active = True
     is_staff = False
-    
+
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
         manager = cls._get_manager(model_class)

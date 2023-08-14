@@ -48,7 +48,7 @@ class ArticleRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = "id"
     renderer_classes = [ArticleJSONRenderer]
     parser_classes = [MultiPartParser, FormParser]
-    
+
     def perform_update(self, serializer):
         instance = serializer.save(author=self.request.user)
         if "banner_image" in self.request.FILES:
@@ -59,7 +59,7 @@ class ArticleRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
                 default_storage.delete(instance.banner_image.path)
             instance.banner_image = self.request.FILES["banner_image"]
             instance.save()
-            
+
     def retrieve(self, request, *args, **kwargs):
         try:
             instance = self.get_object()
@@ -74,6 +74,7 @@ class ArticleRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
         )
 
         return Response(serializer.data)
+
 
 class ClapArticleView(generics.CreateAPIView, generics.DestroyAPIView):
     queryset = Clap.objects.all()

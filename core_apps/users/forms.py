@@ -2,10 +2,10 @@ from django import forms
 from django.contrib.auth import forms as admin_forms
 from django.contrib.auth import get_user_model
 
-
 User = get_user_model()
 
-#for registering custom user to django admin subclass UCF and UCF
+# for registering custom user to django admin subclass UCF and UCF
+
 
 class UserChangeForm(admin_forms.UserChangeForm):
     class Meta(admin_forms.UserChangeForm.Meta):

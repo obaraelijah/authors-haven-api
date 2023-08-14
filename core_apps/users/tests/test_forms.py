@@ -1,4 +1,5 @@
 import pytest
+
 from core_apps.users.forms import UserCreationForm
 from core_apps.users.tests.factories import UserFactory
 

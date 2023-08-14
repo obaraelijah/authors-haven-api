@@ -20,7 +20,7 @@ class ArticleDocument(Document):
     class Django:
         model = Article
         fields = ["created_at"]
-        
+
     def prepare_author_first_name(self, instance):
         return instance.author.first_name
 
