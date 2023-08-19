@@ -43,15 +43,18 @@ To run this project locally, you need to have Docker installed. Follow these ste
     ```
 2. Navigate to the project directory:
 
-    ```cd authors-haven-api
+    ```bash
+    cd authors-haven-api
     ```
 3. Build and run the Docker containers:
 
-    ```Make build 
+    ```bash
+    Make build 
     ```
     or use 
     
-    ```docker-compose up --build
+    ```bash
+    docker compose -f local.yml up --build -d --remove-orphans
     ```
 4. Access the API at http://localhost:8080.
 
