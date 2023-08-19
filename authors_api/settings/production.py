@@ -1,6 +1,8 @@
 from .base import *  # noqa
 from .base import env
 
+ADMINS = [("Elijah Obara Samson", "elijahobara357@gmail.com")]
+
 # TODO add domain names of the production server
 CSRF_TRUSTED_ORIGINS = []
 
@@ -13,6 +15,7 @@ SESSION_COOKIE_SECURE = True
 
 CSRF_COOKIE_SECURE = True
 
+SITE_NAME = "Authors Haven"
 
 LOGGING = {
     "version": 1,
