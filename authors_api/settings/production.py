@@ -15,6 +15,9 @@ SESSION_COOKIE_SECURE = True
 
 CSRF_COOKIE_SECURE = True
 
+# TODO: change to 518400 later
+SECURE_HSTS_SECONDS = 60
+
 SITE_NAME = "Authors Haven"
 
 LOGGING = {
