@@ -1,5 +1,4 @@
 # Authors Haven API with Docker, NGINX, and Redis
-
 <p>
   <a href="https://twitter.com/talkcoding" target="_blank">
     <img alt="Twitter: talkcoding" src="https://img.shields.io/twitter/follow/Talkcoding.svg?style=social" />
@@ -16,15 +15,15 @@
 - User profiles with personalized information
 - Token-based authentication for secure API access
 - Efficient caching using Redis for improved performance
-
+- 
 ## Technologies Used
 
 - Django
 - Django Rest Framework
 - Docker
 - NGINX
-- Redis
 - Celery
+- Redis
 
 ## Getting Started
 
@@ -56,11 +55,10 @@ To run this project locally, you need to have Docker installed. Follow these ste
     ```bash
     docker compose -f local.yml up --build -d --remove-orphans
     ```
-4. Access the API at http://localhost:8080.
+4. Access the API locally at http://localhost:8080.
 
 ## Usage
 After setting up the project locally, you can interact with the API using tools like curl, httpie, or API clients like Postman. Refer to the API documentation for available endpoints, request formats, and responses.
-
 ## License
 
 This project is licensed under the MIT License.
