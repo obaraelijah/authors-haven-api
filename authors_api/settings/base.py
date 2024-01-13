@@ -8,7 +8,6 @@ env = environ.Env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 ROOT_DIR = Path(__file__).resolve().parent.parent.parent
 
-
 APP_DIR = ROOT_DIR / "core_apps"
 
 DEBUG = env.bool("DJANGO_DEBUG", False)
@@ -88,7 +87,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "authors_api.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -108,7 +106,6 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
     "django.contrib.auth.hashers.ScryptPasswordHasher",
 ]
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -142,7 +139,7 @@ USE_TZ = True
 
 SITE_ID = 1
 
-ADMIN_URL = "supersecret/"
+ADMIN_URL = "supersecrets/"
 
 
 # Static files (CSS, JavaScript, Images)
